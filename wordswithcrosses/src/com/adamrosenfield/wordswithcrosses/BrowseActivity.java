@@ -136,6 +136,12 @@ public class BrowseActivity extends WordsWithCrossesActivity implements OnItemCl
             
             boolean all = downloaders.isEmpty();
             
+            if (to.before(from)) {
+            	Calendar c = from;
+            	from = to;
+            	to = c;
+            }
+            
             for (Downloader downloader : downloaders) {
                 if (downloader instanceof DummyDownloader) {
                     continue;
@@ -510,6 +516,15 @@ public class BrowseActivity extends WordsWithCrossesActivity implements OnItemCl
         boolean checked = ((CheckBox)view).isChecked();
         downloadPickerDialogBuilder.showAllPuzzles(checked);
     }
+    
+    /**
+     * Called when the "Show All" checkbox in the bulk download dialog is clicked
+     */
+    public void onBulkDownloadDialogShowAllClicked(View view) {
+        boolean checked = ((CheckBox)view).isChecked();
+        bulkDownloadPickerDialogBuilder.showAllPuzzles(checked);
+    }
+
 
     @Override
     protected void onResume() {

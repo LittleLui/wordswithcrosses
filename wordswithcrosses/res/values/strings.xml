@@ -185,5 +185,8 @@
 
     <string name="dialog_info_title">Puzzle Info</string>
     <string name="dialog_notes_title">Puzzle Notes</string>
-
+    
+    <string name="bulk_download_fromDate">From</string>
+    <string name="bulk_download_toDate">To</string>
+    
 </resources>

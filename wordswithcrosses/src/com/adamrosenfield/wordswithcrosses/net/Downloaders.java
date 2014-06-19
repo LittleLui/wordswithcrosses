@@ -255,6 +255,10 @@ public class Downloaders {
             if (d.isManualDownload()) {
                 continue;
             }
+            
+            if (! d.isPuzzleAvailable(date)) {
+                continue;
+            }
 
             int notifId = nextNotifId.incrementAndGet();
             boolean succeeded = false;

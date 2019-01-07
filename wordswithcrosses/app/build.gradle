@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        applicationId "com.adamrosenfield.wordswithcrosses"
+        versionCode 20503
+        versionName '2.5.3'
+        minSdkVersion 9
+        targetSdkVersion 26
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+        }
+
+        testApplicationId "com.adamrosenfield.wordswithcrosses.wordswithcrosses.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("~/.gnupg/wordswithcrosses.keystore")
+            keyAlias("wwc")
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+    implementation 'org.ccil.cowan.tagsoup:tagsoup:1.2'
+    androidTestImplementation 'junit:junit:4.12'
+}

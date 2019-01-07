@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="auto"
+    package="com.adamrosenfield.wordswithcrosses">
+
+    <supports-screens
+        android:anyDensity="true"
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- <uses-permission android:name="android.permission.READ_LOGS" /> -->
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:name="com.adamrosenfield.wordswithcrosses.WordsWithCrossesApplication"
+        android:restoreAnyVersion="true"
+        android:theme="@style/AppTheme">
+        <!-- Backup not yet enabled
+        android:backupAgent=".BackupAgent"
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="API KEY GOES HERE" />
+        -->
+
+        <activity
+            android:label="@string/app_name"
+            android:name="com.adamrosenfield.wordswithcrosses.HttpDownloadActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            tools:ignore="ExportedActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <!-- The Android pattern matcher is non-greedy, so
+                     matching filenames that contain periods in them
+                     requires this hacky workaround which doesn't
+                     scale to arbitrary numbers of periods, see
+                     http://stackoverflow.com/q/3400072/9530 .  Le
+                     sigh.
+                -->
+                <data
+                    android:scheme="file"
+                    android:host="*"
+                    android:pathPattern=".*.puz"/>
+                <data
+                    android:scheme="file"
+                    android:host="*"
+                    android:pathPattern=".*\\..*.puz"/>
+                <data
+                    android:scheme="file"
+                    android:host="*"
+                    android:pathPattern=".*.jpz"/>
+                <data
+                    android:scheme="file"
+                    android:host="*"
+                    android:pathPattern=".*\\..*.jpz"/>
+                <data
+                    android:scheme="http"
+                    android:host="*"
+                    android:pathPattern=".*.puz"/>
+                <data
+                    android:scheme="http"
+                    android:host="*"
+                    android:pathPattern=".*\\..*.puz"/>
+                <data
+                    android:scheme="http"
+                    android:host="*"
+                    android:pathPattern=".*.jpz"/>
+                <data
+                    android:scheme="http"
+                    android:host="*"
+                    android:pathPattern=".*\\..*.jpz"/>
+                <data
+                    android:scheme="https"
+                    android:host="*"
+                    android:pathPattern=".*.puz"/>
+                <data
+                    android:scheme="https"
+                    android:host="*"
+                    android:pathPattern=".*\\..*.puz"/>
+                <data
+                    android:scheme="https"
+                    android:host="*"
+                    android:pathPattern=".*.jpz"/>
+                <data
+                    android:scheme="https"
+                    android:host="*"
+                    android:pathPattern=".*\\..*.jpz"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/x-crossword" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.adamrosenfield.wordswithcrosses.PlayActivity">
+        </activity>
+        <activity
+            android:label="@string/activity_settings"
+            android:name="com.adamrosenfield.wordswithcrosses.PreferencesActivity">
+        </activity>
+        <activity
+            android:label="@string/activity_clues"
+            android:name="com.adamrosenfield.wordswithcrosses.ClueListActivity">
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.adamrosenfield.wordswithcrosses.HTMLActivity">
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.adamrosenfield.wordswithcrosses.BrowseActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/activity_puzzle_completed"
+            android:name="com.adamrosenfield.wordswithcrosses.PuzzleFinishedActivity"
+            android:theme="@android:style/Theme.Holo.Dialog">
+        </activity>
+
+        <receiver android:name="com.adamrosenfield.wordswithcrosses.net.DownloadReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

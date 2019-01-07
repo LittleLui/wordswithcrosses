@@ -1,5 +1,6 @@
-/wordswithcrosses/bin/
 /test/bin/
 /scratch
 .DS_Store
 .metadata
+.settings
+*.iml

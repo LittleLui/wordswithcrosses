@@ -6,6 +6,6 @@ jobs:
     steps:
       - checkout
       - run: 
-        command: | 
-          cd wordswithcrosses
-          ./gradlew tasks
+          command: | 
+            cd wordswithcrosses
+            ./gradlew tasks

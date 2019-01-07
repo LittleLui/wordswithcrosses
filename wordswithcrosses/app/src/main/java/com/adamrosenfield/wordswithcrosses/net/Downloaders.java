@@ -273,10 +273,10 @@ public class Downloaders {
             String failureMessage = null;
 
             try {
-                updateDownloadingNotification(not, contentTitle, d.getName());
-
                 if (enableNotifications && notificationManager != null) {
-                    notificationManager.notify(GENERAL_NOTIF_ID, not);
+                    notificationManager.notify(GENERAL_NOTIF_ID,
+                            updateDownloadingNotification(not, contentTitle, d.getName())
+                    );
                 }
 
                 String filename = d.getFilename(date);
@@ -347,62 +347,76 @@ public class Downloaders {
         this.enableIndividualDownloadNotifications = enable;
     }
 
-    @SuppressWarnings("deprecation")
     private Notification createDownloadingNotification(String contentTitle) {
-        return new Notification(android.R.drawable.stat_sys_download, contentTitle, System.currentTimeMillis());
+        return new Notification.Builder(context)
+                .setContentTitle(contentTitle)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setWhen(System.currentTimeMillis())
+                .build();
     }
 
-    @SuppressWarnings("deprecation")
-    private void updateDownloadingNotification(Notification not, String contentTitle, String source) {
+    private Notification updateDownloadingNotification(Notification not, String contentTitle, String source) {
         if (not != null) {
             String contentText = context.getResources().getString(R.string.downloading_from, source);
-            not.setLatestEventInfo(context, contentTitle, contentText, pendingBrowseIntent);
+
+            return Notification.Builder.recoverBuilder(context, not)
+                    .setContentTitle(contentTitle)
+                    .setContentText(contentText)
+                    .setContentIntent(pendingBrowseIntent)
+                    .build();
         }
+
+        return null;
     }
 
-    @SuppressWarnings("deprecation")
     private void postDownloadedGeneral() {
         String contentTitle = context.getResources().getString(R.string.downloaded_new_puzzles_title);
-        Notification not = new Notification(
-                android.R.drawable.stat_sys_download_done, contentTitle,
-                System.currentTimeMillis());
-
         String contentText = context.getResources().getString(R.string.downloaded_new_puzzles_text);
-        not.setLatestEventInfo(context, contentTitle, contentText, pendingBrowseIntent);
+
+        Notification not = new Notification.Builder(context)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText)
+                .setContentIntent(pendingBrowseIntent)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setWhen(System.currentTimeMillis())
+                .build();
 
         if (notificationManager != null) {
             notificationManager.notify(GENERAL_NOTIF_ID, not);
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void postDownloadedNotification(int notifId, String name, File puzFile, long puzzleId) {
         String contentTitle = context.getResources().getString(R.string.downloaded_puzzle_title, name);
-
-        Notification not = new Notification(
-                android.R.drawable.stat_sys_download_done, contentTitle,
-                System.currentTimeMillis());
 
         Intent notificationIntent = new Intent(Intent.ACTION_EDIT, null, context, PlayActivity.class);
         notificationIntent.putExtra(PlayActivity.EXTRA_PUZZLE_ID, puzzleId);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        not.setLatestEventInfo(context, contentTitle, puzFile.getName(), contentIntent);
+
+        Notification not = new Notification.Builder(context)
+                .setContentTitle(contentTitle)
+                .setContentText(puzFile.getName())
+                .setContentIntent(contentIntent)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setWhen(System.currentTimeMillis())
+                .build();
 
         if (notificationManager != null) {
             notificationManager.notify(notifId, not);
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void postDownloadFailedNotification(int notifId, String name, String failureMessage) {
         String contentTitle = context.getResources().getString(R.string.download_failed, name);
-
         String contentText = (failureMessage != null ? failureMessage : name);
 
-        Notification not = new Notification(
-                android.R.drawable.stat_notify_error, contentTitle,
-                System.currentTimeMillis());
-        not.setLatestEventInfo(context, contentTitle, contentText, pendingBrowseIntent);
+        Notification not = new Notification.Builder(context)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText)
+                .setContentIntent(pendingBrowseIntent)
+                .setSmallIcon(android.R.drawable.stat_notify_error)
+                .setWhen(System.currentTimeMillis())
+                .build();
 
         if (this.notificationManager != null) {
             this.notificationManager.notify(notifId, not);

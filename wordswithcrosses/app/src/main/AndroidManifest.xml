@@ -106,8 +106,8 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="application/octet-stream" />
-                <data android:mimeType="application/x-crossword" />
+                <data android:scheme="file" android:mimeType="application/octet-stream" />
+                <data android:scheme="file" android:mimeType="application/x-crossword" />
             </intent-filter>
         </activity>
         <activity

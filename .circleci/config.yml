@@ -8,6 +8,9 @@ jobs:
       - run: 
           command: | 
             cd wordswithcrosses
+            cd app/src/test/java/com/adamrosenfield/wordswithcrosses/net/derstandard/
+            ./fetch-test-data.sh
+            cd ../../../../../../../../..
             ./gradlew test
             ./gradlew check
             ./gradlew deviceAndroidTest 

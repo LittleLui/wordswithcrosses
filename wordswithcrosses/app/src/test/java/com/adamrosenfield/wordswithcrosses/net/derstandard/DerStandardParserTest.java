@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.GregorianCalendar;
 
+import org.junit.Test;
 import org.xml.sax.InputSource;
 
 import android.test.AndroidTestCase;
@@ -11,13 +12,16 @@ import android.test.AndroidTestCase;
 import com.adamrosenfield.wordswithcrosses.puz.Box;
 import com.adamrosenfield.wordswithcrosses.puz.Puzzle;
 
-public class DerStandardParserTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
+
+public class DerStandardParserTest {
 
 	private static final boolean NOT_START = false;
 	private static final boolean START = true;
 	private static final int NO_CLUE = 0;
 	private static final char NO_SOLUTION = 0;
 
+	@Test
 	public void testPuzzleParsesCorrectly() throws Exception {
 		DerStandardParser dsp = new DerStandardParser();
 

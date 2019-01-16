@@ -14,53 +14,34 @@ import java.util.TreeSet;
 public class CalendarDateToIdConverter implements DateToIdConverter {
     private final SynchronizationPoints sync = createSync();
     
-    private final static int FIRST_YEAR = 2012;
-    private final static int LAST_YEAR = 2016;
+    private final static int FIRST_YEAR = 2015;
+    private final static int LAST_YEAR = 2100;
 
     private static SynchronizationPoints createSync() {
-        return new 
-        SynchronizationPointsBuilder("2014-06-04", 7691)
+        SynchronizationPointsBuilder builder = new SynchronizationPointsBuilder("2019-01-01", 9069)
+            .skipWeekday(Calendar.SUNDAY, FIRST_YEAR, LAST_YEAR)
 
-        .skipWeekday(Calendar.SUNDAY, FIRST_YEAR, LAST_YEAR)
+      //    .skipYearly("01-01", FIRST_YEAR, LAST_YEAR) //Neujahr
+            .skipYearly("01-06", FIRST_YEAR, LAST_YEAR) //Dreikönig
+            .skipYearly("05-01", FIRST_YEAR, LAST_YEAR) //Staatsfeiertag
+            .skipYearly("08-15", FIRST_YEAR, LAST_YEAR) //Mariä Himmelfahrt
+            .skipYearly("10-26", FIRST_YEAR, LAST_YEAR) //Nationalfeiertag
+            .skipYearly("11-01", FIRST_YEAR, LAST_YEAR) //Allerheiligen
+            .skipYearly("12-08", FIRST_YEAR, LAST_YEAR) //Mariä Empfängnis
+            .skipYearly("12-25", FIRST_YEAR, LAST_YEAR) //Weihnachten
+            .skipYearly("12-26", FIRST_YEAR, LAST_YEAR); //Stefani
 
-        .skipYearly("01-01", FIRST_YEAR, LAST_YEAR) //Neujahr
-        .skipYearly("01-06", FIRST_YEAR, LAST_YEAR) //Dreikönig
-        .skipYearly("05-01", FIRST_YEAR, LAST_YEAR) //Staatsfeiertag
-        .skipYearly("08-15", FIRST_YEAR, LAST_YEAR) //Mariä Himmelfahrt
-        .skipYearly("10-26", FIRST_YEAR, LAST_YEAR) //Nationalfeiertag
-        .skipYearly("11-01", FIRST_YEAR, LAST_YEAR) //Allerheiligen
-        .skipYearly("12-08", FIRST_YEAR, LAST_YEAR) //Mariä Empfängnis
-        .skipYearly("12-25", FIRST_YEAR, LAST_YEAR) //Weihnachten
-        .skipYearly("12-26", FIRST_YEAR, LAST_YEAR) //Stefani
+        for (int year = FIRST_YEAR; year <= LAST_YEAR; year++) {
+            Calendar easterMonday = HolidayUtil.getEasterMonday(year);
+            builder.skip(easterMonday);
+            builder.skip(HolidayUtil.getAscension(easterMonday));
+            builder.skip(HolidayUtil.getPentecostMonday(easterMonday));
+            builder.skip(HolidayUtil.getCorpusChristi(easterMonday));
+        }
 
-        .skip("2012-04-09") //Ostermontag
-        .skip("2012-05-17") //Christi Himmelfahrt
-        .skip("2012-05-28") //Pfingstmontag
-        .skip("2012-06-07") //Fronleichnam
-
-        .skip("2013-04-01")
-        .skip("2013-05-09")
-        .skip("2013-05-20")
-        .skip("2013-05-30")
-                
-        .skip("2014-04-21")
-        .skip("2014-05-29")
-        .skip("2014-06-09")
-        .skip("2014-06-19")
-        
-        .skip("2015-04-06")
-        .skip("2015-05-14")
-        .skip("2015-05-25")
-        .skip("2015-06-04")
-        
-        .skip("2016-03-28")
-        .skip("2016-05-05")
-        .skip("2016-05-16")
-        .skip("2016-05-26")        
-        
-        .limit(2012, 2016)
-
-        .build();
+        return builder
+            .limit(FIRST_YEAR, LAST_YEAR)
+            .build();
     }
 
     public int getId(Calendar date) {
@@ -172,6 +153,10 @@ public class CalendarDateToIdConverter implements DateToIdConverter {
             }
 
             return this;
+        }
+
+        public SynchronizationPointsBuilder skip(Calendar c) {
+            return skip(unparse(c));
         }
 
         public SynchronizationPointsBuilder skip(String date) {

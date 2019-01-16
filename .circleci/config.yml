@@ -16,4 +16,4 @@ jobs:
             ./gradlew check
             ./gradlew deviceAndroidTest 
       - store_test_results:
-           app/build/test-results
+           path: app/build/test-results

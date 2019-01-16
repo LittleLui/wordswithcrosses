@@ -16,4 +16,4 @@ jobs:
             ./gradlew check
             ./gradlew deviceAndroidTest 
       - store_test_results:
-           path: app/build/reports/tests
+           path: wordswithcrosses/app/build/reports/tests
